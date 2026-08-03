@@ -43,7 +43,7 @@ jobs:
       - name: Expose to canaries
         run: |
           az webapp traffic-routing set --distribution canary=20 \
-            --name ughd --resource-group rg-ughd
+            --name ${{ vars.APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP }}
 
   swap-to-prod:
     name: Swap Canary to Production
@@ -67,4 +67,10 @@ jobs:
               -g ${{ vars.RESOURCE_GROUP }} \
               -n ${{ vars.APP_NAME }} \
               --slot canary --target-slot production
+
+      - name: Expose to all
+        run: |
+          az webapp traffic-routing set --distribution production=100 \
+            --name ${{ vars.APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP }}
+
           
