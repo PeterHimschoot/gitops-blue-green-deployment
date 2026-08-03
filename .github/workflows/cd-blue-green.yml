@@ -40,6 +40,11 @@ jobs:
           slot-name: canary
           package: ./app/ExampleAppBuild.zip
 
+      - name: Expose to canaries
+        run: |
+          az webapp traffic-routing set --distribution canary=20 \
+            --name ughd --resource-group rg-ughd
+
   swap-to-prod:
     name: Swap Canary to Production
     needs: deploy-canary
